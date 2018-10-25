@@ -12,7 +12,7 @@ commit_coverage_files() {
 
 upload_files() {
   git remote add origin-master https://${GH_TOKEN}@github.com/scottx611x/problem-solving-with-algorithms-and-data-structures-using-python.git > /dev/null 2>&1
-  git push --set-upstream origin-master master 
+  git push --force --set-upstream origin-master master 
 }
 
 setup_git
