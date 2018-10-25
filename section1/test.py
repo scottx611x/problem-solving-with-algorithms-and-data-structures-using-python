@@ -32,6 +32,15 @@ class FractionTests(unittest.TestCase):
         self.assertTrue(self.fraction >= Fraction(1, 8))
         self.assertFalse(Fraction(1, 8) >= self.fraction)
 
+    def test___lt__(self):
+        self.assertFalse(self.fraction < Fraction(1, 8))
+        self.assertTrue(Fraction(1, 8) < self.fraction)
+
+    def test___le__(self):
+        self.assertTrue(self.fraction <= Fraction(1, 2))
+        self.assertFalse(self.fraction <= Fraction(1, 8))
+        self.assertTrue(Fraction(1, 8) <= self.fraction)
+
     def test__add__(self):
         self.assertEqual(self.fraction + Fraction(4, 8), Fraction(1, 1))
 
