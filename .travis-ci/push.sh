@@ -7,7 +7,7 @@ setup_git() {
 
 commit_coverage_files() {
   git checkout -b master
-  git add htmlcov
+  git add coverage
   git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
 }
 

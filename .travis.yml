@@ -5,7 +5,7 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - nosetests --with-coverage --cover-html --cover-html-dir=htmlcov
+  - nosetests --with-coverage --cover-html --cover-html-dir=coverage
 after_success:
   - if [ $TRAVIS_BRANCH = 'master' ]; then sudo sh .travis-ci/push.sh; fi
 env:
