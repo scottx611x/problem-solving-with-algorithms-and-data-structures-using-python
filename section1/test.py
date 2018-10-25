@@ -18,10 +18,19 @@ class FractionTests(unittest.TestCase):
     def test__gcd_runs_on_init(self):
         self.assertEqual(str(Fraction(6, 12)), "1 / 2")
 
-    def test__eq__(self):
+    def test___eq__(self):
         self.assertEqual(self.fraction, Fraction(1, 2))
         self.assertEqual(self.fraction, Fraction(2, 4))
         self.assertNotEqual(self.fraction, Fraction(3, 4))
+
+    def test___gt__(self):
+        self.assertTrue(self.fraction > Fraction(1, 8))
+        self.assertFalse(Fraction(1, 8) > self.fraction)
+
+    def test___ge__(self):
+        self.assertTrue(self.fraction >= Fraction(1, 2))
+        self.assertTrue(self.fraction >= Fraction(1, 8))
+        self.assertFalse(Fraction(1, 8) >= self.fraction)
 
     def test__add__(self):
         self.assertEqual(self.fraction + Fraction(4, 8), Fraction(1, 1))
