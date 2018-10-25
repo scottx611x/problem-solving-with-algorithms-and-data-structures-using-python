@@ -1,5 +1,5 @@
 import unittest
-from excercises import Fraction, FractionException
+from fraction import Fraction, FractionException
 
 
 class FractionTests(unittest.TestCase):
