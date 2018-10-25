@@ -3,7 +3,7 @@ import operator
 
 class FractionException(Exception):
     def __init__(self, message):
-        super().__init__("Error while creating a Fraction: " + message)
+        super().__init__(message)
 
 class Fraction:
     def __init__(self, numerator, denominator):
@@ -11,6 +11,11 @@ class Fraction:
             raise FractionException(
                 f"{numerator} / {denominator} is not a valid Fraction"
             )
+
+        if denominator < 0:
+            denominator = abs(denominator)
+            numerator = numerator * -1
+
         self.numerator = numerator
         self.denominator = denominator
 
@@ -42,8 +47,23 @@ class Fraction:
     def __le__(self, fraction):
         return self._do_comparison(fraction, operator.le)
 
+    def __or__(self, fraction):
+        return self._do_comparison(fraction, operator.or_)
+
     def __add__(self, fraction):
         return self._do_operation(fraction, operator.add)
+
+    def __iadd__(self, fraction):
+        new_numerator, new_denominator = self._do_operation(
+            fraction, operator.add, values_only=True
+        )
+        self.numerator = new_numerator
+        self.denominator = new_denominator
+        self._gcd()
+        return self
+
+    def __radd__(self, fraction):
+        return fraction + self
 
     def __sub__(self, fraction):
         return self._do_operation(fraction, operator.sub)
@@ -51,10 +71,12 @@ class Fraction:
     def __truediv__(self, fraction):
         return self._do_operation(fraction, operator.floordiv)
 
-    def _do_operation(self, fraction, op):
+    def _do_operation(self, fraction, op, values_only=False):
         new_numerator = op(self.numerator * fraction.denominator,
                            self.denominator * fraction.numerator)
         new_denominator = self.denominator * fraction.denominator
+        if values_only:
+            return (new_numerator, new_denominator)
         return Fraction(new_numerator, new_denominator)
 
     def _do_comparison(self, fraction, op):

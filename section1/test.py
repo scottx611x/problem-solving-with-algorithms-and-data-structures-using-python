@@ -9,6 +9,9 @@ class FractionTests(unittest.TestCase):
     def test___str__(self):
         self.assertEqual(str(self.fraction), "1 / 2")
 
+    def test___repr__(self):
+        self.assertEqual(self.fraction.__repr__(), "Fraction: 1 / 2")
+
     def test_get_numerator(self):
         self.assertEqual(self.fraction.get_numerator(), 1)
 
@@ -44,6 +47,14 @@ class FractionTests(unittest.TestCase):
     def test__add__(self):
         self.assertEqual(self.fraction + Fraction(4, 8), Fraction(1, 1))
 
+    def test__radd__(self):
+        self.assertEqual(self.fraction.__radd__(Fraction(4, 8)),
+                         Fraction(1, 1))
+
+    def test__iadd__(self):
+        self.fraction += Fraction(4, 8)
+        self.assertEqual(self.fraction, Fraction(1, 1))
+
     def test__sub__(self):
         self.assertEqual(self.fraction - Fraction(1, 3), Fraction(1, 6))
 
@@ -56,6 +67,16 @@ class FractionTests(unittest.TestCase):
 
         with self.assertRaises(FractionException):
             Fraction(1, 2.0)
+
+    def test_negative_numerator(self):
+        self.assertEqual(str(Fraction(-1, 2)), "-1 / 2")
+
+    def test_negative_denominator(self):
+        self.assertEqual(str(Fraction(1, -2)), "-1 / 2")
+
+    def test___or__(self):
+        self.assertEqual(self.fraction or Fraction(1, 4), self.fraction)
+        self.assertEqual(None or self.fraction, self.fraction)
 
 if __name__ == '__main__':
     unittest.main()
