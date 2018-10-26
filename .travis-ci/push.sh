@@ -8,12 +8,22 @@ setup_git() {
 }
 
 commit_coverage_files() {
+  echo "Checkout master"
+  git checkout master
+  
+  echo "Pull master"
+  git pull
+
+  echo "Add Coverage"
   git add coverage
-  git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
+
+  echo "Commit"
+  git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
 }
 
 upload_files() {
-  git push --force --set-upstream origin-master master 
+  echo "Push"
+  git push
 }
 
 setup_git
