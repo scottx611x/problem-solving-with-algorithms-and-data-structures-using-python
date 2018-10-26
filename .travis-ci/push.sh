@@ -12,7 +12,7 @@ commit_coverage_files() {
   git checkout master
   
   echo "Pull master"
-  git pull
+  git pull origin-master master
 
   echo "Add Coverage"
   git add coverage
@@ -23,7 +23,7 @@ commit_coverage_files() {
 
 upload_files() {
   echo "Push"
-  git push
+  git push --set-upstream origin-master master
 }
 
 setup_git
