@@ -1,13 +1,27 @@
 sudo: required
+
 language: python
+
 python:
   - '3.6'
+
+stages:
+  - name: deploy
+    if: branch = master AND commit_message !~ /(Travis build)/
+
 install:
   - pip install -r requirements.txt
+
+before_script:
+  - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
+
 script:
   - nosetests --with-coverage --cover-html --cover-html-dir=coverage
-after_success:
-  - if [ $TRAVIS_BRANCH = 'master' ]; then sudo sh .travis-ci/push.sh; fi
+
+deploy:
+  provider: script
+  script: bash .travis-ci/push.sh
+
 env:
   global:
     secure: ZsknBeHoTDK7P6L3JJ3pfKHLtV19pXiwenmMMeWzPj8Hps7TGcT49lEucEVNNXO3n9QOLBfmdaHteBz2ytWkwlsuulwNmbLXHX6BHTDNK4Ly+Yc2JxSn/MOe8jqsMru7nkiirp31LAHS8DArcw2hPnjQvBjv/8FIp7jmwlhfOS595BQEEoOwfpabtAZRsVuMI/yLo7Gls1Be0QXtzO2/HMnEU2rQ1FXOaHLcz0Db+FR2iQ4oYo7nG5S3aG9/PJAsIr/8xUTtWBMrfUhVHmWlPu999sQk/6i/2dBTC52VYoYI8gr2vVEabKKcGfVqv07bpvchxMr9NCRY0btezeZxK4WH+kNhxV0kLxBhLeiOs0NobGEaWK93IZZ8r+f+mY8Ke26KCoNycFHso88g1+1TOS/jqWn8HIBagwJWmypGEhq7nhYvMZNOowLp+nFqi7bpE0gHRanvUWEAJOnPaMJ83zO/L/OlO/RsC8sbhuJ7vFLauJf0JTL1RHs0o4VVUX1TJV86FB76Mdmjz3f7b82ySPAN68Mm3euuBAml6U95sJtR4J3CmmhKIQMrwsHinGrjLzDU9tF4JUMfumer0WFGz+jegE1a7KuNqS6eQTTjtXeHLmsJhuD843ARzp9KJHhJmQ4nByOak+pWZoth62iAU/Bc+b6Lept1xSl4Ba5vsM=
