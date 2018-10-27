@@ -18,21 +18,20 @@ class Fraction:
 
         self.numerator = numerator
         self.denominator = denominator
+        self._gcd()
 
-        self.gcd = self._gcd()
-    
     @property
     def _as_float(self):
         return self.numerator / self.denominator
 
     def __repr__(self):
         return f"Fraction: {self}"
-    
+
     def __str__(self):
         return f"{self.numerator} / {self.denominator}"
 
     def __eq__(self, fraction):
-        return (self.numerator == fraction.numerator and 
+        return (self.numerator == fraction.numerator and
                 self.denominator == fraction.denominator)
 
     def __gt__(self, fraction):
@@ -46,9 +45,6 @@ class Fraction:
 
     def __le__(self, fraction):
         return self._do_comparison(fraction, operator.le)
-
-    def __or__(self, fraction):
-        return self._do_comparison(fraction, operator.or_)
 
     def __add__(self, fraction):
         return self._do_operation(fraction, operator.add)
@@ -68,15 +64,18 @@ class Fraction:
     def __sub__(self, fraction):
         return self._do_operation(fraction, operator.sub)
 
-    def __truediv__(self, fraction):
+    def __div__(self, fraction):
         return self._do_operation(fraction, operator.floordiv)
+
+    def __truediv__(self, fraction):
+        return self.__div__(fraction)
 
     def _do_operation(self, fraction, op, values_only=False):
         new_numerator = op(self.numerator * fraction.denominator,
                            self.denominator * fraction.numerator)
         new_denominator = self.denominator * fraction.denominator
         if values_only:
-            return (new_numerator, new_denominator)
+            return new_numerator, new_denominator
         return Fraction(new_numerator, new_denominator)
 
     def _do_comparison(self, fraction, op):
