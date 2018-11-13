@@ -18,7 +18,7 @@ commit_coverage_files() {
   git add coverage
 
   echo "Commit"
-  git commit -m "Travis build: $TRAVIS_BUILD_NUMBER"
+  git commit -m "Travis build: $TRAVIS_BUILD_NUMBER [skip ci]"
 }
 
 upload_files() {
