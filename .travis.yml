@@ -7,7 +7,7 @@ python:
 
 stages:
   - name: deploy
-    if: branch = master AND commit_message !~ /(Travis build)/
+    if: branch = master
 
 install:
   - pip install -r requirements.txt
