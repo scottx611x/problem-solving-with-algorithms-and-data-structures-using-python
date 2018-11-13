@@ -89,8 +89,9 @@ class HiLo:
                     f"Must be in: {Deck.RANKS}"
             self.play()
 
-    def _continue_playing(self):
-        continue_playing = True
+    def _continue_playing(self, continue_playing=True):
+        existing_message = self.message
+
         if all(str(c) == self.bad_stack_char for c in self.grid):
             self.message = \
                 f"You lost HiLo with {len(self.deck.cards)} cards remaining."
@@ -103,6 +104,8 @@ class HiLo:
             continue_playing = False
 
         if not continue_playing:
+            if existing_message is not None:
+                self.message = f"{existing_message}\n{self.message}"
             self.refresh_grid()
         return continue_playing
 
@@ -158,8 +161,8 @@ class HiLo:
                     if error is not None:
                         self.grid[index] = self.bad_stack_char
                         self.message = f" {new_card} {error} {card}."
-                        self.refresh_grid()
                         if not self._continue_playing():
+                            self.refresh_grid()
                             break
                     else:
                         self.grid[index] = new_card
@@ -183,4 +186,6 @@ class HiLo:
                 self.play()
             return hilo, rank
 
-# HiLo()
+
+if __name__ == '__main__':
+    HiLo()

@@ -186,7 +186,6 @@ class HiLoTest(TestCase):
         with mock.patch("builtins.input", return_value="hi 4"):
             with captured_output() as output:
                 self.hi_lo.play()
-        print(output.getvalue())
         self.assertIn("4♥ <= 4♠", output.getvalue())
 
     def test__check_win_lose_loser(self):
