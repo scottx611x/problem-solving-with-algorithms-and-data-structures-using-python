@@ -78,6 +78,29 @@ class HiLo:
         self.should_play = True
         self.play()
 
+    def _check_game_logic(self):
+        user_hilo, user_rank = self.get_user_input()
+        new_card = self._get_next_card()
+
+        for index, card in enumerate(self.grid):
+            if isinstance(card, Card) and card.rank == user_rank:
+                error = None
+                if user_hilo == "hi":
+                    if not new_card > card:
+                        error = "<="
+                else:
+                    if not new_card < card:
+                        error = ">="
+                if error is not None:
+                    self.grid[index] = self.bad_stack_char
+                    self.message = f" {new_card} {error} {card}."
+                    if not self._continue_playing():
+                        self.refresh_grid()
+                        break
+                else:
+                    self.grid[index] = new_card
+                break
+
     def _check_valid_rank(self, user_rank):
         available_ranks = [c.rank for c in self._get_cards_in_grid()]
 
@@ -146,28 +169,7 @@ class HiLo:
     def play(self):
         while True:
             self.refresh_grid()
-            user_hilo, user_rank = self.get_user_input()
-            new_card = self._get_next_card()
-
-            for index, card in enumerate(self.grid):
-                if isinstance(card, Card) and card.rank == user_rank:
-                    error = None
-                    if user_hilo == "hi":
-                        if not new_card > card:
-                            error = "<="
-                    else:
-                        if not new_card < card:
-                            error = ">="
-                    if error is not None:
-                        self.grid[index] = self.bad_stack_char
-                        self.message = f" {new_card} {error} {card}."
-                        if not self._continue_playing():
-                            self.refresh_grid()
-                            break
-                    else:
-                        self.grid[index] = new_card
-                    break
-
+            self._check_game_logic()
             if not self._continue_playing():
                 break
 
