@@ -1,11 +1,8 @@
 import os
-import sys
-
-from io import StringIO
-from contextlib import contextmanager
 from unittest import TestCase, mock
 
 from section1.cards import Deck, Card, HiLo
+from section1.utils import captured_output
 
 
 class CardTest(TestCase):
@@ -220,13 +217,3 @@ class HiLoTest(TestCase):
             "You won HiLo with 0 dead pile(s) on the board! Congrats!",
             output.getvalue()
         )
-
-@contextmanager
-def captured_output():
-    new_out = StringIO()
-    old_out = sys.stdout
-    try:
-        sys.stdout = new_out
-        yield sys.stdout
-    finally:
-        sys.stdout = old_out
