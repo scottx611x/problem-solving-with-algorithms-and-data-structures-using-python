@@ -132,35 +132,28 @@ class SudokuSolver(SudokuGrid):
             self.display()
             return self.grid
 
-        coords, possible_entries = self.get_square_with_least_possibilities()
-        x, y = coords
-        if len(possible_entries) == 1:
-            self.update_grid((x, y), possible_entries[0])
-            return self.solve()
-        else:
-            for possible_entry in possible_entries:
-                self.update_grid((x, y), possible_entry)
-                return self.solve()
-            self.update_grid((x, y), 0)
+        (x, y), possible_entries = self.get_square_with_least_possibilities()
+        self.update_grid((x, y), possible_entries[0])
+        self.solve()
+        self.update_grid((x, y), 0)
 
-    def _check_okay(self, rows_columns_or_boxes):
-        for i in rows_columns_or_boxes:
-            if sum(i) != 45:
-                return False
-        else:
-            return True
+    def _is_okay(self, rows_columns_or_boxes):
+        return all(
+            set(i) == {1, 2, 3, 4, 5, 6, 7, 8, 9}
+            for i in rows_columns_or_boxes
+        )
 
     @property
     def rows_okay(self):
-        return self._check_okay(self.grid)
+        return self._is_okay(self.grid)
 
     @property
     def columns_okay(self):
-        return self._check_okay(self.get_columns())
+        return self._is_okay(self.get_columns())
 
     @property
     def boxes_okay(self):
-        return self._check_okay(self.get_boxes())
+        return self._is_okay(self.get_boxes())
 
     def is_solved(self):
         return all(
